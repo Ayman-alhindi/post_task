@@ -122,7 +122,6 @@ class AddPostScreen extends StatelessWidget {
                             if (formKey.currentState!.validate()) {
                               controller.createPost(
                                   postText: postTextController.text);
-                              controller.deletePostImage();
                             }
                           },
                           child: controller.pick

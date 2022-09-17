@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feed/Model/user_model.dart';
+import 'package:feed/Utils/shared_preference.dart';
 import 'package:feed/View/Home/add_post.dart';
 import 'package:feed/View/Home/home.dart';
 import 'package:feed/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
@@ -23,11 +25,11 @@ class AuthController extends GetxController {
       FirebaseMessaging.instance.getToken().then((value) {
         UserDataModel model = UserDataModel(
           uId: userData.user!.uid,
-          image: '',
           email: userEmail,
           username: userName,
           token: value!,
         );
+        UserPreferences().saveUser(model);
         FirebaseFirestore.instance
             .collection('users')
             .doc(userData.user!.uid)
@@ -36,7 +38,7 @@ class AuthController extends GetxController {
           registerLoader = false;
           update();
           userConst = userData.user;
-          Get.to(() => AddPostScreen());
+          Get.offAll(() =>  Home());
         }).catchError((error) {
           Fluttertoast.showToast(
             msg: error.toString(),
@@ -58,14 +60,10 @@ class AuthController extends GetxController {
     FirebaseAuth.instance
         .signInWithEmailAndPassword(email: userEmail, password: userPassword)
         .then((value) {
+      userConst = value.user;
       loginLoader = false;
       update();
-      userConst = value.user;
-
-      Fluttertoast.showToast(
-        msg: value.user!.uid,
-      );
-      Get.to(() => AddPostScreen());
+      Get.offAll(() =>  Home(uId: value.user!.uid));
     }).catchError((error) {
       loginLoader = false;
       update();
