@@ -1,11 +1,13 @@
-import 'package:feed/Controller/postController.dart';
+import 'package:feed/Controller/post_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AddPostScreen extends StatelessWidget {
-  TextEditingController postTextController = TextEditingController();
+  final postTextController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+
+  AddPostScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

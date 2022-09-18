@@ -1,5 +1,4 @@
 import 'package:feed/Utils/injection.dart';
-import 'package:feed/View/Home/add_post.dart';
 import 'package:feed/View/Home/home.dart';
 import 'package:feed/View/Login/login.dart';
 import 'package:feed/constants.dart';
@@ -29,9 +28,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  User? user;
+  final User? user;
 
-  MyApp({
+  const MyApp({
     Key? key,
     required this.user,
   }) : super(key: key);
@@ -45,7 +44,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: user != null ?   Home() : LoginScreen(),
+      home: user != null ? const Home() : LoginScreen(),
     );
   }
 }

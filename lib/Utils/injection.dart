@@ -1,5 +1,5 @@
-import 'package:feed/Controller/authController.dart';
-import 'package:feed/Controller/postController.dart';
+import 'package:feed/Controller/auth_controller.dart';
+import 'package:feed/Controller/post_controller.dart';
 import 'package:get/get.dart';
 
 class HomeBinding implements Bindings {

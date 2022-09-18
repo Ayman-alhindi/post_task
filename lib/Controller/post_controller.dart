@@ -1,10 +1,7 @@
 import 'dart:io';
 import 'package:feed/Utils/shared_preference.dart';
-import 'package:feed/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:feed/Model/user_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:feed/Model/post_model.dart';
@@ -15,7 +12,6 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PostController extends GetxController {
-
   String? userName;
   String? uId;
 
@@ -33,8 +29,6 @@ class PostController extends GetxController {
     if (pickedFile != null) {
       postImage = File(pickedFile.path);
       update();
-    } else {
-      print("error");
     }
   }
 
@@ -45,9 +39,9 @@ class PostController extends GetxController {
 
   UserDataModel? user;
 
-  void createPost({postText}) async{
+  void createPost({postText}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName =  prefs.getString("username");
+    userName = prefs.getString("username");
     update();
     pick = true;
     update();
@@ -78,7 +72,7 @@ class PostController extends GetxController {
             update();
             deletePostImage();
             update();
-            Get.offAll(Home());
+            Get.offAll(const Home());
           }).catchError((error) {
             Fluttertoast.showToast(
               msg: error.toString(),
@@ -111,7 +105,7 @@ class PostController extends GetxController {
           .then((value) {
         pick = false;
         update();
-        Get.offAll(Home());
+        Get.offAll(const Home());
       }).catchError((error) {
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -142,10 +136,9 @@ class PostController extends GetxController {
     });
   }
 
-
-  void updatePostLikes(Map<String, PostDataModel> post) async{
+  void updatePostLikes(Map<String, PostDataModel> post) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    uId =  prefs.getString("uId");
+    uId = prefs.getString("uId");
     update();
     if (post.values.single.likes.any((element) => element == uId)) {
       post.values.single.likes.removeWhere((element) => element == uId);
@@ -180,16 +173,13 @@ class PostController extends GetxController {
     });
   }
 
-  void addComment({id,comment,time}) async{
+  void addComment({id, comment, time}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName =  prefs.getString("username");
+    userName = prefs.getString("username");
     update();
-    FirebaseFirestore.instance
-        .collection('posts')
-        .doc(id)
-        .update({
+    FirebaseFirestore.instance.collection('posts').doc(id).update({
       'comments': FieldValue.arrayUnion([
-        {"text":comment,"ownerName":userName,"time":time}
+        {"text": comment, "ownerName": userName, "time": time}
       ])
     }).then((value) {
       update();
@@ -198,16 +188,13 @@ class PostController extends GetxController {
     });
   }
 
-  void deleteComment({id,comment,time}) async{
+  void deleteComment({id, comment, time}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName =  prefs.getString("username");
+    userName = prefs.getString("username");
     update();
-    FirebaseFirestore.instance
-        .collection('posts')
-        .doc(id)
-        .update({
+    FirebaseFirestore.instance.collection('posts').doc(id).update({
       'comments': FieldValue.arrayRemove([
-        {"text":comment,"ownerName":userName,"time":time}
+        {"text": comment, "ownerName": userName, "time": time}
       ])
     }).then((value) {
       update();
@@ -220,11 +207,11 @@ class PostController extends GetxController {
     FirebaseFirestore.instance
         .collection('posts')
         .doc(id)
-        .delete().then((value) {
+        .delete()
+        .then((value) {
       update();
     }).catchError((error) {
       update();
     });
   }
-
 }
