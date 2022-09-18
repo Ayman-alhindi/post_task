@@ -1,25 +1,21 @@
 import 'dart:io';
-import 'package:feed/Utils/shared_preference.dart';
+import 'package:feed/Controller/auth_controller.dart';
+import 'package:feed/ui/screens/home/home_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:feed/Model/user_model.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:feed/Model/post_model.dart';
-import 'package:feed/View/Home/home.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PostController extends GetxController {
-  String? userName;
-  String? uId;
-
+  final AuthController authController;
   bool pick = false;
-
   File? postImage;
-
   var picker = ImagePicker();
+
+  PostController(this.authController);
 
   void pickPostImage() async {
     final pickedFile = await ImagePicker().pickImage(
@@ -37,11 +33,11 @@ class PostController extends GetxController {
     update();
   }
 
-  UserDataModel? user;
+  bool didILike(List<String> likes) {
+    return likes.any((element) => element == authController.user!.uId);
+  }
 
   void createPost({postText}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName = prefs.getString("username");
     update();
     pick = true;
     update();
@@ -60,7 +56,7 @@ class PostController extends GetxController {
             id: doc.id,
             image: value,
             likes: [],
-            ownerName: userName!,
+            ownerName: authController.user!.username,
             shares: 0,
             text: postText,
             time: formattedDate,
@@ -72,7 +68,7 @@ class PostController extends GetxController {
             update();
             deletePostImage();
             update();
-            Get.offAll(const Home());
+            Get.offAll(const HomeScreen());
           }).catchError((error) {
             Fluttertoast.showToast(
               msg: error.toString(),
@@ -96,7 +92,7 @@ class PostController extends GetxController {
         comments: [],
         image: '',
         likes: [],
-        ownerName: userName!,
+        ownerName: authController.user!.username,
         shares: 0,
         text: postText,
         time: formattedDate,
@@ -105,23 +101,13 @@ class PostController extends GetxController {
       doc.set(model.toJson()).then((value) {
         pick = false;
         update();
-        Get.offAll(const Home());
+        Get.offAll(const HomeScreen());
       }).catchError((error) {
         Fluttertoast.showToast(
           msg: error.toString(),
         );
       });
     }
-  }
-
-  void getUserData(String id) {
-    FirebaseFirestore.instance.collection('users').doc(id).get().then((value) {
-      user = UserDataModel.fromJson(value.data()!);
-      UserPreferences().saveUser(user!);
-      update();
-    }).catchError((error) {
-      update();
-    });
   }
 
   List<PostDataModel> postsList = [];
@@ -138,8 +124,8 @@ class PostController extends GetxController {
   }
 
   void updatePostLikes(PostDataModel post) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    uId = prefs.getString("uId");
+    final uId = authController.user!.uId;
+
     update();
     if (post.likes.any((element) => element == uId)) {
       post = post.copyWith(
@@ -147,7 +133,7 @@ class PostController extends GetxController {
       );
       update();
     } else {
-      post = post.copyWith(likes: [...post.likes, uId!]);
+      post = post.copyWith(likes: [...post.likes, uId]);
       update();
     }
 
@@ -179,12 +165,14 @@ class PostController extends GetxController {
   }
 
   void addComment({id, comment, time}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName = prefs.getString("username");
     update();
     FirebaseFirestore.instance.collection('posts').doc(id).update({
       'comments': FieldValue.arrayUnion([
-        {"text": comment, "ownerName": userName, "time": time}
+        {
+          "text": comment,
+          "ownerName": authController.user!.username,
+          "time": time
+        }
       ])
     }).then((value) {
       update();
@@ -194,12 +182,14 @@ class PostController extends GetxController {
   }
 
   void deleteComment({id, comment, time}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName = prefs.getString("username");
     update();
     FirebaseFirestore.instance.collection('posts').doc(id).update({
       'comments': FieldValue.arrayRemove([
-        {"text": comment, "ownerName": userName, "time": time}
+        {
+          "text": comment,
+          "ownerName": authController.user!.username,
+          "time": time
+        }
       ])
     }).then((value) {
       update();
