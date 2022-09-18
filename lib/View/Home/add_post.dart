@@ -7,6 +7,8 @@ class AddPostScreen extends StatelessWidget {
   TextEditingController postTextController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
+  AddPostScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

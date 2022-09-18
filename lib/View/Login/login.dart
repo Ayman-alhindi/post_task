@@ -9,6 +9,8 @@ class LoginScreen extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
+  LoginScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

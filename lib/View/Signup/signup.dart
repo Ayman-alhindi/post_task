@@ -10,6 +10,8 @@ class RegisterScreen extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
 
+  RegisterScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
