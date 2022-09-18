@@ -74,7 +74,7 @@ class PostController extends GetxController {
             update();
             deletePostImage();
             update();
-            Get.offAll(Home());
+            Get.offAll(const Home());
           }).catchError((error) {
             Fluttertoast.showToast(
               msg: error.toString(),
@@ -107,7 +107,7 @@ class PostController extends GetxController {
           .then((value) {
         pick = false;
         update();
-        Get.offAll(Home());
+        Get.offAll(const Home());
       }).catchError((error) {
         Fluttertoast.showToast(
           msg: error.toString(),

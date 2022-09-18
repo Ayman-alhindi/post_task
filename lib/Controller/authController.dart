@@ -36,7 +36,7 @@ class AuthController extends GetxController {
           registerLoader = false;
           update();
           userConst = userData.user;
-          Get.offAll(() => Home());
+          Get.offAll(() => const Home());
         }).catchError((error) {
           Fluttertoast.showToast(
             msg: error.toString(),
