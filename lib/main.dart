@@ -28,9 +28,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  User? user;
+  final User? user;
 
-  MyApp({
+  const MyApp({
     Key? key,
     required this.user,
   }) : super(key: key);

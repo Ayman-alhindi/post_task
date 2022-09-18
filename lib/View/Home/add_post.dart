@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AddPostScreen extends StatelessWidget {
-  TextEditingController postTextController = TextEditingController();
+  final postTextController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   AddPostScreen({Key? key}) : super(key: key);
