@@ -29,8 +29,6 @@ class PostController extends GetxController {
     if (pickedFile != null) {
       postImage = File(pickedFile.path);
       update();
-    } else {
-      print("error");
     }
   }
 
