@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feed/Model/user_model.dart';
 import 'package:feed/Utils/shared_preference.dart';
 import 'package:feed/View/Home/home.dart';
-import 'package:feed/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -12,6 +11,24 @@ class AuthController extends GetxController {
   bool isVisible = true;
   bool registerLoader = false;
   bool loginLoader = false;
+
+  final auth = FirebaseAuth.instance;
+  // Instead of calling reference every time, we can't call it once here
+  final _ref = FirebaseFirestore.instance.collection('users');
+
+  UserDataModel? get user {
+    return _toUser(auth.currentUser);
+  }
+
+  UserDataModel? _toUser(User? fireUser) {
+    return fireUser == null
+        ? null
+        : UserDataModel(
+            uId: fireUser.uid,
+            username: fireUser.displayName ?? '',
+            email: fireUser.email ?? '',
+          );
+  }
 
   void register({userName, userEmail, userPassword}) {
     registerLoader = true;
@@ -28,14 +45,9 @@ class AuthController extends GetxController {
           token: value!,
         );
         UserPreferences().saveUser(model);
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(userData.user!.uid)
-            .set(model.toJson())
-            .then((value) {
+        _ref.doc(userData.user!.uid).set(model.toJson()).then((value) {
           registerLoader = false;
           update();
-          userConst = userData.user;
           Get.offAll(() => const Home());
         }).catchError((error) {
           Fluttertoast.showToast(
@@ -58,7 +70,6 @@ class AuthController extends GetxController {
     FirebaseAuth.instance
         .signInWithEmailAndPassword(email: userEmail, password: userPassword)
         .then((value) {
-      userConst = value.user;
       loginLoader = false;
       update();
       Get.offAll(() => Home(uId: value.user!.uid));
