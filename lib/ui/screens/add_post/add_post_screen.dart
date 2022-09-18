@@ -18,7 +18,7 @@ class AddPostScreen extends StatelessWidget {
           ),
         ),
         body: GetBuilder<PostController>(
-            init: PostController(),
+            init: Get.find<PostController>(),
             builder: (controller) {
               return Padding(
                 padding: const EdgeInsets.all(20.0),

@@ -1,29 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feed/Controller/post_controller.dart';
-import 'package:feed/View/Home/comments.dart';
-import 'package:feed/constants.dart';
+import 'package:feed/Utils/image_from_url.dart';
+import 'package:feed/ui/components/divider.dart';
+import 'package:feed/ui/components/spacing.dart';
+import 'package:feed/ui/screens/add_post/add_post_screen.dart';
+import 'package:feed/ui/screens/comments/comments_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
-import 'add_post.dart';
 import 'package:intl/intl.dart';
 
-class Home extends StatefulWidget {
-  final String uId;
-
-  const Home({
-    Key? key,
-    this.uId = '',
-  }) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeScreenState extends State<HomeScreen> {
   TextEditingController commentController = TextEditingController();
   CollectionReference reference =
       FirebaseFirestore.instance.collection('posts');
@@ -33,9 +30,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    if (widget.uId != '') {
-      controller.getUserData(widget.uId);
-    }
     setState(() {
       controller.getPosts();
     });
@@ -50,7 +44,7 @@ class _HomeState extends State<Home> {
           ),
         ),
         body: GetBuilder<PostController>(
-            init: PostController(),
+            init: Get.find<PostController>(),
             builder: (controller) {
               return FutureBuilder(
                 future: reference.get(),
@@ -166,7 +160,7 @@ class _HomeState extends State<Home> {
                                             onTap: () {
                                               var docId =
                                                   snapshot.data.docs[index].id;
-                                              Get.to(() => Comments(
+                                              Get.to(() => CommentsScreen(
                                                     commentList: controller
                                                         .postsList[index]
                                                         .comments,
@@ -197,10 +191,8 @@ class _HomeState extends State<Home> {
                                                   controller.postsList[index]);
                                             },
                                             child: Icon(
-                                              controller.postsList[index].likes
-                                                      .any((element) =>
-                                                          element ==
-                                                          controller.uId)
+                                              controller.didILike(controller
+                                                      .postsList[index].likes)
                                                   ? Icons.thumb_up
                                                   : Icons.thumb_up_outlined,
                                               size: 16.0,

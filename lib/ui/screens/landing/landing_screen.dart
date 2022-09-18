@@ -1,19 +1,19 @@
-import 'package:feed/View/Home/home.dart';
-import 'package:feed/View/Login/login.dart';
+import 'package:feed/ui/screens/auth/login/login_screen.dart';
+import 'package:feed/ui/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // you can check if the user is signed in by FirebaseAuth
 // this page check for user state and choose
 // which page to go to depends on user state
-class LandingPage extends StatefulWidget {
-  const LandingPage({Key? key}) : super(key: key);
+class LandingScreen extends StatefulWidget {
+  const LandingScreen({Key? key}) : super(key: key);
 
   @override
-  _LandingPageState createState() => _LandingPageState();
+  _LandingScreenState createState() => _LandingScreenState();
 }
 
-class _LandingPageState extends State<LandingPage> {
+class _LandingScreenState extends State<LandingScreen> {
   @override
   void initState() {
     super.initState();
@@ -42,7 +42,7 @@ class _LandingPageState extends State<LandingPage> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute<void>(
-        builder: (BuildContext context) => const Home(),
+        builder: (BuildContext context) => const HomeScreen(),
       ),
     );
   }

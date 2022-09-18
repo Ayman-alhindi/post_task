@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
-class Comments extends StatelessWidget {
+class CommentsScreen extends StatelessWidget {
   final List<CommentDataModel> commentList;
   final String id;
-  const Comments({required this.commentList, Key? key, required this.id})
+  const CommentsScreen({required this.commentList, Key? key, required this.id})
       : super(key: key);
 
   @override
@@ -19,7 +19,7 @@ class Comments extends StatelessWidget {
         ),
       ),
       body: GetBuilder<PostController>(
-          init: PostController(),
+          init: Get.find<PostController>(),
           builder: (controller) {
             return ListView.builder(
                 itemCount: commentList.length,
