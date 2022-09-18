@@ -1,11 +1,8 @@
 import 'dart:io';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
-
-User? userConst;
 
 const String regularGrey = 'E9E8E7';
 

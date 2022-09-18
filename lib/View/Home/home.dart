@@ -87,20 +87,15 @@ class _HomeState extends State<Home> {
                                   padding: const EdgeInsets.all(16.0),
                                   child: Row(
                                     children: [
-                                      if (controller.postsList[index].values
-                                              .single.ownerName !=
+                                      if (controller
+                                              .postsList[index].ownerName !=
                                           '')
                                         CircleAvatar(
                                           radius: 20.0,
                                           child: Center(
                                             child: Text(
-                                              controller
-                                                  .postsList[index]
-                                                  .values
-                                                  .single
-                                                  .ownerName
-                                                  .characters
-                                                  .first,
+                                              controller.postsList[index]
+                                                  .ownerName.characters.first,
                                               style: const TextStyle(
                                                 fontSize: 26.0,
                                                 fontWeight: FontWeight.w900,
@@ -115,16 +110,15 @@ class _HomeState extends State<Home> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              controller.postsList[index].values
-                                                  .single.ownerName,
+                                              controller
+                                                  .postsList[index].ownerName,
                                               style: const TextStyle(
                                                 fontSize: 18.0,
                                                 fontWeight: FontWeight.w800,
                                               ),
                                             ),
                                             Text(
-                                              controller.postsList[index].values
-                                                  .single.time,
+                                              controller.postsList[index].time,
                                               style: TextStyle(
                                                 fontSize: 14.0,
                                                 color: Colors.grey[400],
@@ -143,21 +137,19 @@ class _HomeState extends State<Home> {
                                     Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: Text(
-                                        controller.postsList[index].values
-                                            .single.text,
+                                        controller.postsList[index].text,
                                       ),
                                     ),
-                                    if (controller.postsList[index].values
-                                        .single.image.isNotEmpty)
+                                    if (controller
+                                        .postsList[index].image.isNotEmpty)
                                       Image.network(
-                                        controller.postsList[index].values
-                                            .single.image,
+                                        controller.postsList[index].image,
                                         width: double.infinity,
                                         height: 220.0,
                                         fit: BoxFit.cover,
                                       ),
-                                    if (controller.postsList[index].values
-                                        .single.image.isEmpty)
+                                    if (controller
+                                        .postsList[index].image.isEmpty)
                                       const MyDivider(),
                                     space10Vertical(context),
                                     Padding(
@@ -167,7 +159,7 @@ class _HomeState extends State<Home> {
                                       child: Row(
                                         children: [
                                           Text(
-                                            '${controller.postsList[index].values.single.likes.length} likes',
+                                            '${controller.postsList[index].likes.length} likes',
                                           ),
                                           const Spacer(),
                                           InkWell(
@@ -177,21 +169,19 @@ class _HomeState extends State<Home> {
                                               Get.to(() => Comments(
                                                     commentList: controller
                                                         .postsList[index]
-                                                        .values
-                                                        .single
                                                         .comments,
                                                     id: docId,
                                                   ));
                                             },
                                             child: Text(
-                                              '${controller.postsList[index].values.single.comments.length} comments',
+                                              '${controller.postsList[index].comments.length} comments',
                                             ),
                                           ),
                                           const Text(
                                             ' - ',
                                           ),
                                           Text(
-                                            '${controller.postsList[index].values.single.shares} shares',
+                                            '${controller.postsList[index].shares} shares',
                                           ),
                                         ],
                                       ),
@@ -207,8 +197,7 @@ class _HomeState extends State<Home> {
                                                   controller.postsList[index]);
                                             },
                                             child: Icon(
-                                              controller.postsList[index].values
-                                                      .single.likes
+                                              controller.postsList[index].likes
                                                       .any((element) =>
                                                           element ==
                                                           controller.uId)
@@ -272,25 +261,18 @@ class _HomeState extends State<Home> {
                                         Expanded(
                                           child: MaterialButton(
                                             onPressed: () async {
-                                              if (controller
-                                                  .postsList[index]
-                                                  .values
-                                                  .single
-                                                  .image
-                                                  .isNotEmpty) {
+                                              if (controller.postsList[index]
+                                                  .image.isNotEmpty) {
                                                 final img = await imageFromURL(
                                                   'temp',
-                                                  controller.postsList[index]
-                                                      .values.single.image,
+                                                  controller
+                                                      .postsList[index].image,
                                                 );
 
                                                 Share.shareFiles(
                                                   [img!.path],
                                                   text: controller
-                                                      .postsList[index]
-                                                      .values
-                                                      .single
-                                                      .text,
+                                                      .postsList[index].text,
                                                 ).whenComplete(() {
                                                   controller.updatePostShares(
                                                       controller
@@ -298,8 +280,8 @@ class _HomeState extends State<Home> {
                                                 });
                                               } else {
                                                 Share.share(
-                                                  controller.postsList[index]
-                                                      .values.single.text,
+                                                  controller
+                                                      .postsList[index].text,
                                                 ).whenComplete(() {
                                                   controller.updatePostShares(
                                                       controller

@@ -8,7 +8,6 @@ class UserPreferences {
     prefs.setString("uId", user.uId);
     prefs.setString("username", user.username);
     prefs.setString("email", user.email);
-    prefs.setString("token", user.token);
     return true;
   }
 }

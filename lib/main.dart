@@ -1,8 +1,5 @@
 import 'package:feed/Utils/injection.dart';
-import 'package:feed/View/Home/home.dart';
-import 'package:feed/View/Login/login.dart';
-import 'package:feed/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:feed/ui/pages/landing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +8,6 @@ import 'package:get/get.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  userConst = FirebaseAuth.instance.currentUser;
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
@@ -24,16 +20,11 @@ void main() async {
     provisional: false,
     sound: true,
   );
-  runApp(MyApp(user: userConst));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final User? user;
-
-  const MyApp({
-    Key? key,
-    required this.user,
-  }) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: user != null ? const Home() : LoginScreen(),
+      home: const LandingPage(),
     );
   }
 }

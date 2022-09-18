@@ -9,7 +9,6 @@ class UserDataModel with _$UserDataModel {
     required String uId,
     required String username,
     required String email,
-    required String token,
   }) = _UserDataModel;
 
   factory UserDataModel.fromJson(Map<String, dynamic> json) =>

@@ -6,6 +6,7 @@ part 'post_model.freezed.dart';
 @freezed
 class PostDataModel with _$PostDataModel {
   factory PostDataModel({
+    required String id,
     required String text,
     required String time,
     required String image,
@@ -22,6 +23,7 @@ class PostDataModel with _$PostDataModel {
 @freezed
 class CommentDataModel with _$CommentDataModel {
   factory CommentDataModel({
+    required String id,
     required String text,
     required String time,
     required String ownerName,
