@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feed/Model/user_model.dart';
 import 'package:feed/Utils/shared_preference.dart';
-import 'package:feed/View/Home/home.dart';
+import 'package:feed/ui/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -33,10 +33,12 @@ class AuthController extends GetxController {
   void register({userName, userEmail, userPassword}) {
     registerLoader = true;
     update();
-    FirebaseAuth.instance
+    auth
         .createUserWithEmailAndPassword(
             email: userEmail, password: userPassword)
-        .then((userData) {
+        .then((userData) async {
+      // You have to add username to firebase as a display name
+      await auth.currentUser!.updateDisplayName(userName);
       FirebaseMessaging.instance.getToken().then((value) {
         UserDataModel model = UserDataModel(
           uId: userData.user!.uid,
@@ -51,7 +53,7 @@ class AuthController extends GetxController {
         _ref.doc(userData.user!.uid).set(model.toJson()).then((value) {
           registerLoader = false;
           update();
-          Get.offAll(() => const Home());
+          Get.offAll(() => const HomeScreen());
         }).catchError((error) {
           Fluttertoast.showToast(
             msg: error.toString(),
@@ -70,12 +72,12 @@ class AuthController extends GetxController {
   void login({userEmail, userPassword}) {
     loginLoader = true;
     update();
-    FirebaseAuth.instance
+    auth
         .signInWithEmailAndPassword(email: userEmail, password: userPassword)
         .then((value) {
       loginLoader = false;
       update();
-      Get.offAll(() => Home(uId: value.user!.uid));
+      Get.offAll(() => const HomeScreen());
     }).catchError((error) {
       loginLoader = false;
       update();
