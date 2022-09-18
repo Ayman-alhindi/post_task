@@ -54,7 +54,10 @@ class PostController extends GetxController {
           .putFile(postImage!)
           .then((p0) {
         p0.ref.getDownloadURL().then((value) {
+          final doc = FirebaseFirestore.instance.collection('posts').doc();
+
           PostDataModel model = PostDataModel(
+            id: doc.id,
             image: value,
             likes: [],
             ownerName: userName!,
@@ -64,10 +67,7 @@ class PostController extends GetxController {
             comments: [],
           );
 
-          FirebaseFirestore.instance
-              .collection('posts')
-              .add(model.toJson())
-              .then((value) {
+          doc.set(model.toJson()).then((value) {
             pick = false;
             update();
             deletePostImage();
@@ -89,7 +89,10 @@ class PostController extends GetxController {
         );
       });
     } else {
+      final doc = FirebaseFirestore.instance.collection('posts').doc();
+
       PostDataModel model = PostDataModel(
+        id: doc.id,
         comments: [],
         image: '',
         likes: [],
@@ -99,10 +102,7 @@ class PostController extends GetxController {
         time: formattedDate,
       );
 
-      FirebaseFirestore.instance
-          .collection('posts')
-          .add(model.toJson())
-          .then((value) {
+      doc.set(model.toJson()).then((value) {
         pick = false;
         update();
         Get.offAll(const Home());
@@ -124,34 +124,35 @@ class PostController extends GetxController {
     });
   }
 
-  List<Map<String, PostDataModel>> postsList = [];
+  List<PostDataModel> postsList = [];
 
   void getPosts() {
     FirebaseFirestore.instance.collection('posts').snapshots().listen((value) {
       postsList = [];
       for (var element in value.docs) {
         postsList.add(
-            {element.reference.id: PostDataModel.fromJson(element.data())});
+          PostDataModel.fromJson(element.data()),
+        );
       }
     });
   }
 
-  void updatePostLikes(Map<String, PostDataModel> post) async {
+  void updatePostLikes(PostDataModel post) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     uId = prefs.getString("uId");
     update();
-    if (post.values.single.likes.any((element) => element == uId)) {
-      post.values.single.likes.removeWhere((element) => element == uId);
+    if (post.likes.any((element) => element == uId)) {
+      post.likes.removeWhere((element) => element == uId);
       update();
     } else {
-      post.values.single.likes.add(uId!);
+      post.likes.add(uId!);
       update();
     }
 
     FirebaseFirestore.instance
         .collection('posts')
-        .doc(post.keys.single)
-        .update(post.values.single.toJson())
+        .doc(post.id)
+        .update(post.toJson())
         .then((value) {
       update();
     }).catchError((error) {
@@ -159,13 +160,15 @@ class PostController extends GetxController {
     });
   }
 
-  void updatePostShares(Map<String, PostDataModel> post) {
-    post.values.single.shares++;
+  void updatePostShares(PostDataModel post) {
+    post = post.copyWith(
+      shares: post.shares + 1,
+    );
 
     FirebaseFirestore.instance
         .collection('posts')
-        .doc(post.keys.single)
-        .update(post.values.single.toJson())
+        .doc(post.id)
+        .update(post.toJson())
         .then((value) {
       update();
     }).catchError((error) {
