@@ -142,10 +142,12 @@ class PostController extends GetxController {
     uId = prefs.getString("uId");
     update();
     if (post.likes.any((element) => element == uId)) {
-      post.likes.removeWhere((element) => element == uId);
+      post = post.copyWith(
+        likes: post.likes.where((element) => element != uId).toList(),
+      );
       update();
     } else {
-      post.likes.add(uId!);
+      post = post.copyWith(likes: [...post.likes, uId!]);
       update();
     }
 
