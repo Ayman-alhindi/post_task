@@ -42,8 +42,11 @@ class AuthController extends GetxController {
           uId: userData.user!.uid,
           email: userEmail,
           username: userName,
-          token: value!,
         );
+        if (value != null) {
+          saveUserToken(value);
+        }
+
         UserPreferences().saveUser(model);
         _ref.doc(userData.user!.uid).set(model.toJson()).then((value) {
           registerLoader = false;
@@ -85,5 +88,24 @@ class AuthController extends GetxController {
   void visibility() {
     isVisible = !isVisible;
     update();
+  }
+
+  void saveUserToken(String token) async {
+    // Instead of saving the token in the user model and in preferences
+    // it better be saved in Firestore only, since it won't be used here
+    await _ref
+        .doc(auth.currentUser!.uid)
+        // the token is saved in subcollection inside the user collection
+        .collection('private')
+        .doc('notifications')
+        .set(
+      {
+        // Instead of only one token, we only keep multi tokens
+        'tokens': FieldValue.arrayUnion(
+          [token],
+        ),
+      },
+      SetOptions(merge: true),
+    );
   }
 }
