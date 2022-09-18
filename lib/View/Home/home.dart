@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:feed/Controller/postController.dart';
+import 'package:feed/Controller/post_controller.dart';
 import 'package:feed/View/Home/comments.dart';
 import 'package:feed/constants.dart';
 import 'package:flutter/cupertino.dart';

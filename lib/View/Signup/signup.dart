@@ -1,4 +1,4 @@
-import 'package:feed/Controller/authController.dart';
+import 'package:feed/Controller/auth_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

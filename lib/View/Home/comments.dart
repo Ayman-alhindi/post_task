@@ -1,4 +1,4 @@
-import 'package:feed/Controller/postController.dart';
+import 'package:feed/Controller/post_controller.dart';
 import 'package:feed/Model/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
