@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feed/Model/user_model.dart';
 import 'package:feed/Utils/shared_preference.dart';
-import 'package:feed/View/Home/add_post.dart';
 import 'package:feed/View/Home/home.dart';
 import 'package:feed/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 

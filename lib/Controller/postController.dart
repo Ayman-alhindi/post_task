@@ -1,10 +1,7 @@
 import 'dart:io';
 import 'package:feed/Utils/shared_preference.dart';
-import 'package:feed/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:feed/Model/user_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:feed/Model/post_model.dart';
