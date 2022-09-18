@@ -1,7 +1,6 @@
 import 'package:feed/Utils/injection.dart';
-import 'package:feed/View/Home/home.dart';
-import 'package:feed/View/Login/login.dart';
 import 'package:feed/constants.dart';
+import 'package:feed/ui/pages/landing_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -44,7 +43,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: user != null ? const Home() : LoginScreen(),
+      home: const LandingPage(),
     );
   }
 }
