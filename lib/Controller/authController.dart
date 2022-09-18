@@ -38,7 +38,7 @@ class AuthController extends GetxController {
           registerLoader = false;
           update();
           userConst = userData.user;
-          Get.offAll(() =>  Home());
+          Get.offAll(() => Home());
         }).catchError((error) {
           Fluttertoast.showToast(
             msg: error.toString(),
@@ -63,7 +63,7 @@ class AuthController extends GetxController {
       userConst = value.user;
       loginLoader = false;
       update();
-      Get.offAll(() =>  Home(uId: value.user!.uid));
+      Get.offAll(() => Home(uId: value.user!.uid));
     }).catchError((error) {
       loginLoader = false;
       update();

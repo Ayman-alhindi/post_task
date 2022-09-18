@@ -11,5 +11,4 @@ class UserPreferences {
     prefs.setString("token", user.token);
     return true;
   }
-
 }

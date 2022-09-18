@@ -1,5 +1,4 @@
 class PostDataModel {
-
   PostDataModel({
     required this.text,
     required this.time,
@@ -23,9 +22,9 @@ class PostDataModel {
     time = json['time'] ?? '';
     image = json['image'] ?? '';
     ownerName = json['ownerName'] ?? '';
-    if(json['likes'] != null){
+    if (json['likes'] != null) {
       likes = List.from(json['likes']).map((e) => e.toString()).toList();
-    }else{
+    } else {
       likes = [];
     }
     shares = json['shares'] ?? 0;

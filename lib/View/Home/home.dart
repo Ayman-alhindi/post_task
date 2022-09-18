@@ -12,11 +12,10 @@ import 'package:share_plus/share_plus.dart';
 import 'add_post.dart';
 import 'package:intl/intl.dart';
 
-
 class Home extends StatefulWidget {
   final String uId;
 
- const Home({
+  const Home({
     Key? key,
     this.uId = '',
   }) : super(key: key);
@@ -27,19 +26,20 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   TextEditingController commentController = TextEditingController();
-  CollectionReference reference = FirebaseFirestore.instance.collection('posts');
+  CollectionReference reference =
+      FirebaseFirestore.instance.collection('posts');
 
   PostController controller = Get.find();
 
   @override
   void initState() {
     super.initState();
-   if(widget.uId != ''){
-     controller.getUserData(widget.uId);
-   }
-   setState(() {
-     controller.getPosts();
-   });
+    if (widget.uId != '') {
+      controller.getUserData(widget.uId);
+    }
+    setState(() {
+      controller.getPosts();
+    });
   }
 
   @override
@@ -50,8 +50,7 @@ class _HomeState extends State<Home> {
             'Home',
           ),
         ),
-        body:
-        GetBuilder<PostController>(
+        body: GetBuilder<PostController>(
             init: PostController(),
             builder: (controller) {
               return FutureBuilder(
@@ -73,9 +72,9 @@ class _HomeState extends State<Home> {
                                 backgroundColor: Colors.red,
                                 onPressed: (context) {
                                   var docId = snapshot.data.docs[index].id;
-                                 controller.deletePost(id: docId);
-                                 controller.postsList.removeAt(index);
-                                 controller.update();
+                                  controller.deletePost(id: docId);
+                                  controller.postsList.removeAt(index);
+                                  controller.update();
                                 },
                               )
                             ],
@@ -89,34 +88,32 @@ class _HomeState extends State<Home> {
                                   padding: const EdgeInsets.all(16.0),
                                   child: Row(
                                     children: [
-                                      if( controller
-                                          .postsList[index]
-                                          .values
-                                          .single
-                                          .ownerName != '')
-                                      CircleAvatar(
-                                        radius: 20.0,
-                                        child: Center(
-                                          child: Text(
-                                            controller
-                                                .postsList[index]
-                                                .values
-                                                .single
-                                                .ownerName
-                                                .characters
-                                                .first,
-                                            style: const TextStyle(
-                                              fontSize: 26.0,
-                                              fontWeight: FontWeight.w900,
+                                      if (controller.postsList[index].values
+                                              .single.ownerName !=
+                                          '')
+                                        CircleAvatar(
+                                          radius: 20.0,
+                                          child: Center(
+                                            child: Text(
+                                              controller
+                                                  .postsList[index]
+                                                  .values
+                                                  .single
+                                                  .ownerName
+                                                  .characters
+                                                  .first,
+                                              style: const TextStyle(
+                                                fontSize: 26.0,
+                                                fontWeight: FontWeight.w900,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
                                       space10Horizontal(context),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               controller.postsList[index].values
@@ -147,21 +144,21 @@ class _HomeState extends State<Home> {
                                     Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: Text(
-                                        controller
-                                            .postsList[index].values.single.text,
+                                        controller.postsList[index].values
+                                            .single.text,
                                       ),
                                     ),
-                                    if (controller.postsList[index].values.single
-                                        .image.isNotEmpty)
+                                    if (controller.postsList[index].values
+                                        .single.image.isNotEmpty)
                                       Image.network(
-                                        controller
-                                            .postsList[index].values.single.image,
+                                        controller.postsList[index].values
+                                            .single.image,
                                         width: double.infinity,
                                         height: 220.0,
                                         fit: BoxFit.cover,
                                       ),
-                                    if (controller.postsList[index].values.single
-                                        .image.isEmpty)
+                                    if (controller.postsList[index].values
+                                        .single.image.isEmpty)
                                       const MyDivider(),
                                     space10Vertical(context),
                                     Padding(
@@ -176,8 +173,16 @@ class _HomeState extends State<Home> {
                                           const Spacer(),
                                           InkWell(
                                             onTap: () {
-                                              var docId = snapshot.data.docs[index].id;
-                                              Get.to(() =>  Comments(commentList: controller.postsList[index].values.single.comments,id: docId,));
+                                              var docId =
+                                                  snapshot.data.docs[index].id;
+                                              Get.to(() => Comments(
+                                                    commentList: controller
+                                                        .postsList[index]
+                                                        .values
+                                                        .single
+                                                        .comments,
+                                                    id: docId,
+                                                  ));
                                             },
                                             child: Text(
                                               '${controller.postsList[index].values.single.comments.length} comments',
@@ -204,10 +209,10 @@ class _HomeState extends State<Home> {
                                             },
                                             child: Icon(
                                               controller.postsList[index].values
-                                                  .single.likes
-                                                  .any((element) =>
-                                              element ==
-                                                  controller.uId)
+                                                      .single.likes
+                                                      .any((element) =>
+                                                          element ==
+                                                          controller.uId)
                                                   ? Icons.thumb_up
                                                   : Icons.thumb_up_outlined,
                                               size: 16.0,
@@ -222,14 +227,18 @@ class _HomeState extends State<Home> {
                                                 textCancel: "Confirm",
                                                 content: TextFormField(
                                                   controller: commentController,
-                                                  keyboardType: TextInputType.text,
+                                                  keyboardType:
+                                                      TextInputType.text,
                                                   decoration: InputDecoration(
                                                     isDense: false,
-                                                    contentPadding: const EdgeInsets.symmetric(
+                                                    contentPadding:
+                                                        const EdgeInsets
+                                                            .symmetric(
                                                       horizontal: 20.0,
                                                     ),
                                                     border: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
                                                         15.0,
                                                       ),
                                                     ),
@@ -238,15 +247,19 @@ class _HomeState extends State<Home> {
                                                     ),
                                                   ),
                                                 ),
-                                                onCancel: (){
-                                                  var docId = snapshot.data.docs[index].id;
+                                                onCancel: () {
+                                                  var docId = snapshot
+                                                      .data.docs[index].id;
                                                   DateTime now = DateTime.now();
-                                                  String formattedDate = DateFormat('kk:mm EEE d MMM').format(now);
+                                                  String formattedDate =
+                                                      DateFormat(
+                                                              'kk:mm EEE d MMM')
+                                                          .format(now);
                                                   controller.addComment(
                                                       id: docId,
-                                                      comment: commentController.text,
-                                                      time: formattedDate
-                                                  );
+                                                      comment: commentController
+                                                          .text,
+                                                      time: formattedDate);
                                                   commentController.clear();
                                                 },
                                               );
@@ -260,29 +273,38 @@ class _HomeState extends State<Home> {
                                         Expanded(
                                           child: MaterialButton(
                                             onPressed: () async {
-                                              if (controller.postsList[index].values
-                                                  .single.image.isNotEmpty) {
+                                              if (controller
+                                                  .postsList[index]
+                                                  .values
+                                                  .single
+                                                  .image
+                                                  .isNotEmpty) {
                                                 final img = await imageFromURL(
                                                   'temp',
-                                                  controller.postsList[index].values
-                                                      .single.image,
+                                                  controller.postsList[index]
+                                                      .values.single.image,
                                                 );
 
                                                 Share.shareFiles(
                                                   [img!.path],
-                                                  text: controller.postsList[index]
-                                                      .values.single.text,
+                                                  text: controller
+                                                      .postsList[index]
+                                                      .values
+                                                      .single
+                                                      .text,
                                                 ).whenComplete(() {
                                                   controller.updatePostShares(
-                                                      controller.postsList[index]);
+                                                      controller
+                                                          .postsList[index]);
                                                 });
                                               } else {
                                                 Share.share(
-                                                  controller.postsList[index].values
-                                                      .single.text,
+                                                  controller.postsList[index]
+                                                      .values.single.text,
                                                 ).whenComplete(() {
                                                   controller.updatePostShares(
-                                                      controller.postsList[index]);
+                                                      controller
+                                                          .postsList[index]);
                                                 });
                                               }
                                             },
@@ -300,7 +322,8 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                         ),
-                        separatorBuilder: (context, index) => space10Vertical(context),
+                        separatorBuilder: (context, index) =>
+                            space10Vertical(context),
                         itemCount: controller.postsList.length,
                       ),
                     ];
@@ -320,8 +343,8 @@ class _HomeState extends State<Home> {
                     children = <Widget>[
                       const Center(
                           child: CupertinoActivityIndicator(
-                            color: Colors.black,
-                          )),
+                        color: Colors.black,
+                      )),
                       const Padding(
                         padding: EdgeInsets.only(top: 16),
                         child: Text('Awaiting result...'),
@@ -342,10 +365,9 @@ class _HomeState extends State<Home> {
             }),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
-          onPressed: (){
+          onPressed: () {
             Get.to(() => AddPostScreen());
           },
-        )
-    );
+        ));
   }
 }

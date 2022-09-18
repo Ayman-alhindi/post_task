@@ -15,7 +15,6 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PostController extends GetxController {
-
   String? userName;
   String? uId;
 
@@ -45,9 +44,9 @@ class PostController extends GetxController {
 
   UserDataModel? user;
 
-  void createPost({postText}) async{
+  void createPost({postText}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName =  prefs.getString("username");
+    userName = prefs.getString("username");
     update();
     pick = true;
     update();
@@ -142,10 +141,9 @@ class PostController extends GetxController {
     });
   }
 
-
-  void updatePostLikes(Map<String, PostDataModel> post) async{
+  void updatePostLikes(Map<String, PostDataModel> post) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    uId =  prefs.getString("uId");
+    uId = prefs.getString("uId");
     update();
     if (post.values.single.likes.any((element) => element == uId)) {
       post.values.single.likes.removeWhere((element) => element == uId);
@@ -180,16 +178,13 @@ class PostController extends GetxController {
     });
   }
 
-  void addComment({id,comment,time}) async{
+  void addComment({id, comment, time}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName =  prefs.getString("username");
+    userName = prefs.getString("username");
     update();
-    FirebaseFirestore.instance
-        .collection('posts')
-        .doc(id)
-        .update({
+    FirebaseFirestore.instance.collection('posts').doc(id).update({
       'comments': FieldValue.arrayUnion([
-        {"text":comment,"ownerName":userName,"time":time}
+        {"text": comment, "ownerName": userName, "time": time}
       ])
     }).then((value) {
       update();
@@ -198,16 +193,13 @@ class PostController extends GetxController {
     });
   }
 
-  void deleteComment({id,comment,time}) async{
+  void deleteComment({id, comment, time}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName =  prefs.getString("username");
+    userName = prefs.getString("username");
     update();
-    FirebaseFirestore.instance
-        .collection('posts')
-        .doc(id)
-        .update({
+    FirebaseFirestore.instance.collection('posts').doc(id).update({
       'comments': FieldValue.arrayRemove([
-        {"text":comment,"ownerName":userName,"time":time}
+        {"text": comment, "ownerName": userName, "time": time}
       ])
     }).then((value) {
       update();
@@ -220,11 +212,11 @@ class PostController extends GetxController {
     FirebaseFirestore.instance
         .collection('posts')
         .doc(id)
-        .delete().then((value) {
+        .delete()
+        .then((value) {
       update();
     }).catchError((error) {
       update();
     });
   }
-
 }

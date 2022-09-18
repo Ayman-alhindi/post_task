@@ -5,10 +5,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
 class Comments extends StatelessWidget {
-
   final List<CommentDataModel> commentList;
   final String id;
-  const Comments({required this.commentList,Key? key, required this.id}) : super(key: key);
+  const Comments({required this.commentList, Key? key, required this.id})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class Comments extends StatelessWidget {
       body: GetBuilder<PostController>(
           init: PostController(),
           builder: (controller) {
-            return    ListView.builder(
+            return ListView.builder(
                 itemCount: commentList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Slidable(
@@ -54,7 +54,7 @@ class Comments extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                     CircleAvatar(
+                                    CircleAvatar(
                                       radius: 20.0,
                                       child: Center(
                                         child: Text(
@@ -72,7 +72,8 @@ class Comments extends StatelessWidget {
                                     const SizedBox(width: 10),
                                     Text(
                                       commentList[index].ownerName,
-                                      style: const TextStyle(color: Colors.black, fontSize: 15),
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 15),
                                     ),
                                   ],
                                 ),
@@ -88,8 +89,10 @@ class Comments extends StatelessWidget {
                             child: Row(
                               children: [
                                 Expanded(
-                                  child: Text(commentList[index].text,
-                                    style: const TextStyle(color: Colors.black, fontSize: 15),
+                                  child: Text(
+                                    commentList[index].text,
+                                    style: const TextStyle(
+                                        color: Colors.black, fontSize: 15),
                                   ),
                                 ),
                               ],
